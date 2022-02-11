@@ -3,8 +3,8 @@ const path = require('path');
 const fs = require('fs');
 const app = express();
 const PORT = 3001;
-const api = require('./db/db.json');
-const { Notes } = require('@material-ui/icons');
+let api = require('./db/db.json');
+//const { Notes } = require('@material-ui/icons');
 
 
 app.use(express.static('public'));
@@ -31,12 +31,23 @@ app.post('/api/notes', (req, res) => {
 });
 
 app.delete('/api/notes/:id', (req, res) => {
-    const id = req.params.id
+    const id = parseInt(req.params.id)
     console.log(id)
-    for (let i = i < Notes.length; i++) {
-        if(deleteNote !== notes[i])
+
+    var newNotes = []
+    for (let i = 0; i < api.length; i++) {
+        if(id !== api[i].id) {
+            console.log('keep em!!', api[i])
+            newNotes.push(api[i])
+        } else {
+            console.log('DELETE EM!!', api[i])
+        }
         
     }
+
+    api = newNotes
+    console.log('all the notes we anted to kep!', newNotes)
+    res.json(newNotes)
 })
 
 app.get('*', (req, res) =>
